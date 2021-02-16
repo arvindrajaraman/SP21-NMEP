@@ -1,0 +1,152 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage[titletoc,title]{appendix}
+\usepackage{amsmath,amsfonts,amssymb,mathtools,amsthm}
+\usepackage{graphicx,float}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{algorithmic,listings}
+
+\title{ML@B NMEP - HW 1}
+\author{Arvind Rajaraman}
+\date{February 11, 2021}
+
+\newtheorem{theorem}{Theorem}[section]
+\renewcommand{\labelenumi}{\alph{enumi})}
+\renewcommand{\labelenumii}{(\roman{enumii})}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\begin{document}
+
+\maketitle
+
+\section{Basic Computations}
+\begin{enumerate}
+    \item $\begin{bmatrix}
+        1 \\ 2
+    \end{bmatrix} \begin{bmatrix}
+        3 \\ 2
+    \end{bmatrix} = \begin{bmatrix}
+        4 \\ 2
+    \end{bmatrix}.$
+    \item $\begin{bmatrix}
+        1 \\ 2 \\ 3
+    \end{bmatrix} \begin{bmatrix}
+        3 \\ 2 \\ 1
+    \end{bmatrix} = \begin{bmatrix}
+        4 \\ 2 \\ 0
+    \end{bmatrix} = \begin{bmatrix}
+        8 \\ 6 \\ 4
+    \end{bmatrix}.$
+    \item $\begin{bmatrix}
+        0 & 1 \\
+        1 & 0
+    \end{bmatrix} \begin{bmatrix}
+        1 \\ 2
+    \end{bmatrix} = \begin{bmatrix}
+        0(1) + 1(2) \\ 1(1) + 0(2)
+    \end{bmatrix} = \begin{bmatrix}
+        2 \\ 1
+    \end{bmatrix}.$
+\end{enumerate}
+
+\section{Linear Transformations}
+\begin{enumerate}
+    \item $\mathrm{C}(A) = \mathrm{span}(\begin{bmatrix}
+        1 \\ -1 \\ 0
+    \end{bmatrix}, \begin{bmatrix}
+        2 \\ 4 \\ 6
+    \end{bmatrix}, \begin{bmatrix}
+        3 \\ 2 \\ 5 
+    \end{bmatrix})$.
+    $\mathrm{N}(A) = \mathrm{span}(\begin{bmatrix}
+        -\frac{4}{3} \\[3pt] -\frac{5}{6} \\[3pt] 1
+    \end{bmatrix})$.
+    \item Linear transformations on a space can be fully represented by the transformed basis vectors of that space. If $A_1$ is the matrix that describes $T_1$'s transformed basis vectors and $A_2$ for $T_2$, we know that matrix multiplication is not necessarily commutative. In other words, $A_1A_2 \neq A_2A_1$ in general. Thus, performing linear transformations in a different order on $\vec{x}$ can lead to different results.
+    \item Not necessarily. Here is a counterexample: $A_1 = \begin{bmatrix}
+        1 & 1 \\ 1 & 1
+    \end{bmatrix}$ and $A_2 = \begin{bmatrix}
+        1 & 2 \\ -1 & -2
+    \end{bmatrix}$. For a vector $\vec{x}=\begin{bmatrix}
+        x_1 \\ x_2
+    \end{bmatrix}$, $A_1A_2\vec{x} = \begin{bmatrix}
+        1 & 1 \\ 1 & 1
+    \end{bmatrix} \begin{bmatrix}
+        1 & 2 \\ -1 & -2
+    \end{bmatrix} \begin{bmatrix}
+        v_1 \\ v_2
+    \end{bmatrix} = \begin{bmatrix}
+        0 & 0 \\ 0 & 0
+    \end{bmatrix} \begin{bmatrix}
+        v_1 \\ v_2
+    \end{bmatrix} = \begin{bmatrix}
+        0 \\ 0
+    \end{bmatrix}$.
+\end{enumerate}
+
+\section{Least Squares, Projection}
+\begin{enumerate}
+    \item $A^T A \vec{x} = A^T \vec{b}$: \\
+    $\begin{bmatrix}
+        3 & 0 & -6 \\
+        0 & 24 & 24 \\
+        -6 & 24 & 36
+    \end{bmatrix} \begin{bmatrix}
+        x_1 \\ x_2 \\ x_3
+    \end{bmatrix} = \begin{bmatrix}
+        9 \\ 12 \\ 6
+    \end{bmatrix}.$ \\
+    $\mathrm{rref}(A^T A) = \begin{bmatrix}
+        1 & 0 & -2 & 0 \\
+        0 & 1 & 1 & 0 \\
+        0 & 0 & 0 & 1
+    \end{bmatrix}.$ \\
+    $x_1 - 2x_3 = 3 \implies x_1 = 2x_3 + 3$.\\
+    $x_2 + x_3 = \frac{1}{2} \implies x_2 = -x_3 + \frac{1}{2}$.\\
+    $\vec{x} = \begin{bmatrix}
+        x_1 \\ x_2 \\ x_3
+    \end{bmatrix} \in \boxed{\{ \begin{bmatrix}
+        2\alpha + 3 \\ -\alpha + \frac{1}{2} \\ \alpha
+    \end{bmatrix} | \alpha \in \mathbb{R} \}}$.
+    \item $\mathrm{proj}_V(\vec{b}) = A[(A^T A)^{-1} A^T \vec{b}] = \begin{bmatrix}
+        1 & 2 & 0 \\
+        -1 & 4 & 6 \\
+        1 & 2 & 0
+    \end{bmatrix} \begin{bmatrix}
+        2\alpha + 3 \\ -\alpha + \frac{1}{2} \\ \alpha
+    \end{bmatrix} = \begin{bmatrix}
+        2\alpha + 3 -2\alpha + 1 + 0\alpha \\
+        -2\alpha - 3 -4\alpha + 2 + 6\alpha \\
+        2\alpha + 3 -2\alpha + 1 + 0\alpha
+    \end{bmatrix} = \boxed{\begin{bmatrix}
+        4 \\ -1 \\ 4
+    \end{bmatrix}}$.
+    \item $\mathrm{dist}(\vec{b}, \mathrm{span}(\vec{v_1}, \vec{v_2})) = \norm{\vec{b} - \mathrm{proj}_V(\vec{b})} = \norm{\begin{bmatrix}
+        3 \\ -1 \\ 5
+    \end{bmatrix} - \begin{bmatrix}
+        4 \\ -1 \\ 4
+    \end{bmatrix}} = \norm{\begin{bmatrix}
+        -1 \\ 0 \\ 1
+    \end{bmatrix}} = \sqrt{1^2 + 0^2 + 1^2} = \boxed{\sqrt{2}}$.
+\end{enumerate}
+
+\section{Ridge Regression Derivation}
+Here, we compute the gradient of the loss function:
+\begin{align*}
+    &\nabla (\norm{X\vec{w} - Y}^2_2 + \lambda \norm{\vec{w}}^2_2) \\
+    = &\nabla\norm{X\vec{w} - Y}^2_2 + \nabla\lambda \norm{\vec{w}}^2_2 \\
+    = &\nabla(X\vec{w} - Y)^T(X\vec{w} - Y) + \lambda\nabla \vec{w}^T \vec{w} \\
+    = &2X^T(X\vec{w} - Y) + \lambda(2\vec{w}) = 0.
+\end{align*}
+Here, we isolate $\vec{w}$ to find the optimal solution:
+\begin{align*}
+    2\vec{w}X^TX - 2X^TY + 2\lambda\vec{w} &= 0 \\
+    \vec{w}X^TX - X^TY + \lambda\vec{w} &= 0 \\
+    \vec{w}(X^T X + \lambda I) &= X^T Y \\
+    \vec{w} &= \boxed{(X^T X + \lambda I)^{-1} X^T Y}.
+\end{align*}
+By choosing different values for $\lambda$, we can penalize the parameters in $\vec{w}$ for having wildly different values (which contribute to high variance). By increasing $\lambda$, we penalize high values more, which reduces the variance of the model. By decreasing $\lambda$, we keep the model more intact and allow for a more complex decision boundary.
+\end{document}

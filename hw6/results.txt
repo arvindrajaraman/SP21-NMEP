@@ -1,0 +1,86 @@
+This is what our Resnet18 architecture looks like:
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+            Conv2d-1            [1, 64, 16, 16]           9,472
+       BatchNorm2d-2            [1, 64, 16, 16]             128
+              ReLU-3            [1, 64, 16, 16]               0
+         MaxPool2d-4              [1, 64, 8, 8]               0
+            Conv2d-5              [1, 64, 8, 8]          36,928
+       BatchNorm2d-6              [1, 64, 8, 8]             128
+              ReLU-7              [1, 64, 8, 8]               0
+            Conv2d-8              [1, 64, 8, 8]          36,928
+       BatchNorm2d-9              [1, 64, 8, 8]             128
+             ReLU-10              [1, 64, 8, 8]               0
+           Conv2d-11              [1, 64, 8, 8]          36,928
+      BatchNorm2d-12              [1, 64, 8, 8]             128
+             ReLU-13              [1, 64, 8, 8]               0
+           Conv2d-14              [1, 64, 8, 8]          36,928
+      BatchNorm2d-15              [1, 64, 8, 8]             128
+             ReLU-16              [1, 64, 8, 8]               0
+         ResBlock-17              [1, 64, 8, 8]               0
+           Conv2d-18             [1, 128, 4, 4]          73,856
+      BatchNorm2d-19             [1, 128, 4, 4]             256
+             ReLU-20             [1, 128, 4, 4]               0
+           Conv2d-21             [1, 128, 4, 4]         147,584
+      BatchNorm2d-22             [1, 128, 4, 4]             256
+             ReLU-23             [1, 128, 4, 4]               0
+           Conv2d-24             [1, 128, 4, 4]           8,320
+           Conv2d-25             [1, 128, 4, 4]         147,584
+      BatchNorm2d-26             [1, 128, 4, 4]             256
+             ReLU-27             [1, 128, 4, 4]               0
+           Conv2d-28             [1, 128, 4, 4]         147,584
+      BatchNorm2d-29             [1, 128, 4, 4]             256
+             ReLU-30             [1, 128, 4, 4]               0
+         ResBlock-31             [1, 128, 4, 4]               0
+           Conv2d-32             [1, 256, 2, 2]         295,168
+      BatchNorm2d-33             [1, 256, 2, 2]             512
+             ReLU-34             [1, 256, 2, 2]               0
+           Conv2d-35             [1, 256, 2, 2]         590,080
+      BatchNorm2d-36             [1, 256, 2, 2]             512
+             ReLU-37             [1, 256, 2, 2]               0
+           Conv2d-38             [1, 256, 2, 2]          33,024
+           Conv2d-39             [1, 256, 2, 2]         590,080
+      BatchNorm2d-40             [1, 256, 2, 2]             512
+             ReLU-41             [1, 256, 2, 2]               0
+           Conv2d-42             [1, 256, 2, 2]         590,080
+      BatchNorm2d-43             [1, 256, 2, 2]             512
+             ReLU-44             [1, 256, 2, 2]               0
+         ResBlock-45             [1, 256, 2, 2]               0
+           Conv2d-46             [1, 512, 1, 1]       1,180,160
+      BatchNorm2d-47             [1, 512, 1, 1]           1,024
+             ReLU-48             [1, 512, 1, 1]               0
+           Conv2d-49             [1, 512, 1, 1]       2,359,808
+      BatchNorm2d-50             [1, 512, 1, 1]           1,024
+             ReLU-51             [1, 512, 1, 1]               0
+           Conv2d-52             [1, 512, 1, 1]         131,584
+           Conv2d-53             [1, 512, 1, 1]       2,359,808
+      BatchNorm2d-54             [1, 512, 1, 1]           1,024
+             ReLU-55             [1, 512, 1, 1]               0
+           Conv2d-56             [1, 512, 1, 1]       2,359,808
+      BatchNorm2d-57             [1, 512, 1, 1]           1,024
+             ReLU-58             [1, 512, 1, 1]               0
+         ResBlock-59             [1, 512, 1, 1]               0
+        AvgPool2d-60             [1, 512, 1, 1]               0
+           Linear-61                     [1, 4]           2,052
+================================================================
+Total params: 11,181,572
+Trainable params: 11,181,572
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 0.01
+Forward/backward pass size (MB): 1.20
+Params size (MB): 42.65
+Estimated Total Size (MB): 43.87
+----------------------------------------------------------------
+
+Before we implemented our dataloader, we did some preprocessing. 
+Particularly, the cifar-10 dataset needed to unpickled before the images from it could be extracted.
+All of this is done in preprocessing.py
+
+As for the training, we used an SGD optimizer with the parameters specified in the config yaml.
+We trained on 100 epochs, with the training loss (cross entropy loss) starting at 1.35628 and ending at approximately 0.02620 before the loss converged and would not reduce any further.
+Our validation loss started at ~2.34 and reduced to roughly ~1.16 before converging as well.
+Similarly, we also kept track on average validation loss, which started at ~29% and we achieved the highest average of ~72%.
+
+We tested 32 images (4 rotations per image so 128 images actually) from the CIFAR-10 test_batch and got a 71.09 accuracy.
